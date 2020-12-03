@@ -1,4 +1,4 @@
-class Square extends ChessProject{
+class Square{
   public int xCoor;
   public int yCoor;
   public String pieceName;

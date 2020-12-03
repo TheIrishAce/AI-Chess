@@ -1,4 +1,4 @@
-class Move extends ChessProject{
+class Move{
   Square start;
   Square landing;
 
