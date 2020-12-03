@@ -26,6 +26,7 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 	Boolean agentwins = false;
 	Boolean white2Move = false;
 	String rand = "rand";
+	static int response; //Desired AI type 0 = Random, 1 = Next Best, 2 = 2x Deep.
 	AIAgent agent = new AIAgent();
 
 	public ChessProject() {
@@ -1393,21 +1394,34 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 
 		} else {
 			System.out.println("=============================================================");
-			Stack testing = new Stack();
+			Stack moves = new Stack();
 			while (!completeMoves.empty()) {
 				Move tmpMove = (Move) completeMoves.pop();
 				Square s1 = (Square) tmpMove.getStart();
 				Square s2 = (Square) tmpMove.getLanding();
 				System.out.println("The " + s1.getName() + " can move from (" + s1.getXC() + ", " + s1.getYC()
 						+ ") to the following square: (" + s2.getXC() + ", " + s2.getYC() + ")");
-				testing.push(tmpMove);
+						moves.push(tmpMove);
 			}
 			System.out.println("=============================================================");
 			Border redBorder = BorderFactory.createLineBorder(Color.RED, 3);
-			// if(rand.contains("rand")){
-			// selectedMove = agent.randomMove(testing);
-			// }
-			selectedMove = agent.randomMove(testing);
+			if(response == 0){
+				selectedMove = agent.randomMove(moves);
+				System.out.println("Random AI Selected");
+			}
+			else if (response == 1){
+				selectedMove = agent.nextBestMove(moves);
+				System.out.println("Next Best AI Selected");
+			}
+			else if (response == 2){
+				selectedMove = agent.twoLevelsDeep(moves);
+				System.out.println("2 Deep AI Selected");
+			}
+			else{
+				selectedMove = agent.randomMove(moves);
+				System.out.println("Selected AI Defaulted to Random");
+			}
+			
 			Square startingPoint = (Square) selectedMove.getStart();
 			Square landingPoint = (Square) selectedMove.getLanding();
 			int startX1 = (startingPoint.getXC() * 75) + 20;
@@ -1473,19 +1487,8 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 	 * Main method that gets the ball moving.
 	 */
 	public static void main(String[] args) {
-		String[] strategy = new String[] { "Random", "Greedy Best", "Advanced" };
-		int response = JOptionPane.showOptionDialog(null, "Message", "Title", JOptionPane.DEFAULT_OPTION,
-		JOptionPane.PLAIN_MESSAGE, null, strategy, strategy[0]);
-
-		if (response == 1) {
-			System.out.println("A");
-			initalCreation();
-		} else if (response == 2) {
-			System.out.println("B");
-			initalCreation();
-		} else {
-			System.out.println("C");
-			initalCreation();
-		}
+		String[] strategy = new String[] { "Random", "Next Best", "2 Deep" };
+		response = JOptionPane.showOptionDialog(null, "Message", "Title", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, strategy, strategy[0]);
+		initalCreation(); //Create the chess board.
 	}
 }
