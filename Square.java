@@ -2,13 +2,11 @@ class Square{
   public int xCoor;
   public int yCoor;
   public String pieceName;
-  public int pieceScore;
 
-  public Square(int x, int y, String name, int score){
+  public Square(int x, int y, String name){
     xCoor = x;
     yCoor = y;
     pieceName = name;
-    pieceScore = score;
   }
 
   public Square(int x, int y){
@@ -28,8 +26,4 @@ class Square{
   public String getName(){
       return pieceName;
   }
-
-  public int getPieceScore(){
-    return pieceScore;
-}
 }
