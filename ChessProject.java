@@ -208,7 +208,7 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 		Boolean validMove = false;
 		
 		if(tmp.contains("Pawn")){
-			pieceScore = 1;
+			pieceScore = 2;
 		}
 		if(tmp.contains("Rook")){
 			pieceScore = 5;
@@ -858,7 +858,7 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 
 	// AI element of the application.
 	private Stack getWhitePawnSquares(int x, int y, String piece) {
-		Stack moves = new Stack();
+        Stack moves = new Stack();
         Square startingSquare = new Square(x, y, piece, pieceScore);
         //one in front, one to the front and to the left, one to the front and to the right, two to the front
         Move validM, validM2, validM3, validM4;
@@ -867,62 +867,73 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
         int tmpx2 = x - 1;
         int tmpy1 = y + 1;
         int tmpy2 = y + 2;
-        //if the new x cord isn't great than 7
-        if (!((tmpx1 > 7))) {
-            //x position stays the same, y position plus 1
-            Square tmp = new Square(x, tmpy1, piece, 1);
-            //x position plus 1, y position plus 1
-            Square tmp1 = new Square(tmpx1, tmpy1, piece, 1);
-            //x position minus 1, y position plus 1
-            Square tmp2 = new Square(tmpx2, tmpy1, piece, 1);
-            //x position stays the same, y position plus 2
-            Square tmp3 = new Square(x, tmpy2, piece, 1);
 
-            if (startY == 6) {
-                //move forward one piece
-                if (checkSurroundingSquares(tmp)) {
-					if(aiType == 0){
-						validM = new Move(startingSquare, tmp);
-					}
-					else if(aiType == 1){
-						validM = new Move(startingSquare, tmp, 0);
-					}
-					else{
-						validM = new Move(startingSquare, tmp);
-					}
-                    if (!piecePresent(((tmp.getXC() * 75) + 20), (((tmp.getYC() * 75) + 20)))) {
-                        moves.push(validM);
-                    }
+        //x position stays the same, y position plus 1
+        Square tmp = new Square(x, tmpy1, piece, pieceScore);
+        //x position plus 1, y position plus 1 (right)
+        Square tmp1 = new Square(tmpx1, tmpy1, piece, pieceScore);
+        //x position minus 1, y position plus 1 (left)
+        Square tmp2 = new Square(tmpx2, tmpy1, piece, pieceScore);
+        //x position stays the same, y position plus 2
+        Square tmp3 = new Square(x, tmpy2, piece, pieceScore);
+
+        //if pawn is in the first position, can't use startY doesn't work
+        if (y == 1) {
+            //I know I'm moving two Y cords directly in front of me
+            validM = new Move(startingSquare, tmp3);
+            //I know I'm moving one Y cord directly in front of me
+            validM2 = new Move(startingSquare, tmp);
+            //I know I'm moving down and to the left
+            validM3 = new Move(startingSquare, tmp2);
+            //I know I'm moving down and to the right
+            validM4 = new Move(startingSquare, tmp1);
+
+            //if there is no piece present in the two squares provided (tmp(y+1), tmp3 (y+2)) valid move
+            if (!piecePresent((tmp.getXC() * 75) + 20, (tmp.getYC() * 75) + 20) && !piecePresent((tmp3.getXC() * 75) + 20, (tmp3.getYC() * 75) + 20)) {
+                moves.push(validM);
+            }
+            //is there no piece in front of me when moving one square?
+            if ((!piecePresent(((tmp.getXC() * 75) + 20), (((tmp.getYC() * 75) + 20)))) && tmpy1 >= 0 && tmpy1 <= 7) {
+                moves.push(validM2);
+            }
+            //is there a piece to my left?
+            if ((piecePresent(((tmp2.getXC() * 75) + 20), (((tmp2.getYC() * 75) + 20)))) && tmpx2 >= 0 && tmpx2 <= 7 && tmpy1 >= 0 && tmpy1 <= 7) {
+                if (checkWhiteOponent(((tmp2.getXC() * 75) + 20), (((tmp2.getYC() * 75) + 20)))) {
+                    moves.push(validM3);
                 }
-                //move forward two pieces
-                if (checkSurroundingSquares(tmp3)) {
-                    validM3 = new Move(startingSquare, tmp3);
-                    if ((!piecePresent(((tmp3.getXC() * 75) + 20), (((tmp3.getYC() * 75) + 20)))) && (!piecePresent(((tmp3.getXC() * 75) + 20), (((tmp3.getYC() * 150) + 20))))) {
-                        moves.push(validM3);
-                    }
+            }
+            //is there a piece to my right?
+            if ((piecePresent(((tmp1.getXC() * 75) + 20), (((tmp1.getYC() * 75) + 20)))) && tmpx1 >= 0 && tmpx1 <= 7 && tmpy1 >= 0 && tmpy1 <= 7) {
+                if (checkWhiteOponent(((tmp1.getXC() * 75) + 20), (((tmp1.getYC() * 75) + 20)))) {
+                    moves.push(validM4);
                 }
-            } else{
-                //moving forward one piece
-                if (checkSurroundingSquares(tmp)) {
-                    validM = new Move(startingSquare, tmp);
-                    if (!piecePresent(((tmp.getXC() * 75) + 20), (((tmp.getYC() * 75) + 20)))) {
-                        moves.push(validM);
-                    }
+            }
+        } else {
+            //I know I'm moving one square in front of me
+            validM2 = new Move(startingSquare, tmp);
+            //I know I'm moving one square in front of me and to the left
+            validM3 = new Move(startingSquare, tmp2);
+            //I know I'm moving one square in front of me and to the right
+            validM4 = new Move(startingSquare, tmp1);
+
+            //is there no piece in front of me when moving one square?
+            if (!piecePresent(((tmp.getXC() * 75) + 20), (((tmp.getYC() * 75) + 20)))) {
+                moves.push(validM2);
+            }
+            //moving forward one piece and to the right if there is a piece there
+            if ((piecePresent(((tmp1.getXC() * 75) + 20), (((tmp1.getYC() * 75) + 20)))) && tmpx1 >= 0 && tmpx1 <= 7 && tmpy1 >= 0 && tmpy1 <= 7) {
+                if (checkWhiteOponent(((tmp1.getXC() * 75) + 20), (((tmp1.getYC() * 75) + 20)))) {
+                    moves.push(validM4);
                 }
-                //moving forward one piece and to the right if there is a piece there
-                if (checkSurroundingSquares(tmp1)) {
-                    validM2 = new Move(startingSquare, tmp1);
-                    if (!piecePresent(((tmp1.getXC() * 75) + 20), (((tmp1.getYC() * 75) + 20)))) {
-                        //would consider it a valid move if there is no piece there, can't take this if out at the moment, breaks code
-                    } else {
-                        if (checkWhiteOponent(((tmp1.getXC() * 75) + 20), (((tmp1.getYC() * 75) + 20)))) {
-                            moves.push(validM2);
-                        }
-                    }
+            }
+            //moving forward one piece and to the left if there is a piece there
+            if ((piecePresent(((tmp2.getXC() * 75) + 20), (((tmp2.getYC() * 75) + 20))) && tmpx2 >= 0 && tmpx2 <= 7 && tmpy1 >= 0 && tmpy1 <= 7)) {
+                if (checkWhiteOponent(((tmp2.getXC() * 75) + 20), (((tmp2.getYC() * 75) + 20)))) {
+                    moves.push(validM3);
                 }
             }
         }
-        return moves;
+        return moves;	
 	}
 
 	private Stack getKingSquares(int x, int y, String piece) {
@@ -976,9 +987,9 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 			}
 		}
 		if (!((tmpx2 < 0))) {
-			Square tmp3 = new Square(tmpx2, y, piece, 100);
-			Square tmp4 = new Square(tmpx2, tmpy1, piece, 100);
-			Square tmp5 = new Square(tmpx2, tmpy2, piece, 100);
+			Square tmp3 = new Square(tmpx2, y, piece, pieceScore);
+			Square tmp4 = new Square(tmpx2, tmpy1, piece, pieceScore);
+			Square tmp5 = new Square(tmpx2, tmpy2, piece, pieceScore);
 			if (checkSurroundingSquares(tmp3)) {
 				validM = new Move(startingSquare, tmp3);
 				if (!piecePresent(((tmp3.getXC() * 75) + 20), (((tmp3.getYC() * 75) + 20)))) {
@@ -1014,8 +1025,8 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 				}
 			}
 		}
-		Square tmp7 = new Square(x, tmpy1, piece, 100);
-		Square tmp8 = new Square(x, tmpy2, piece, 100);
+		Square tmp7 = new Square(x, tmpy1, piece, pieceScore);
+		Square tmp8 = new Square(x, tmpy2, piece, pieceScore);
 		if (!(tmpy1 > 7)) {
 			if (checkSurroundingSquares(tmp7)) {
 				validM2 = new Move(startingSquare, tmp7);
@@ -1078,7 +1089,7 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 			int tmpx = x + i;
 			int tmpy = y;
 			if (!(tmpx > 7 || tmpx < 0)) {
-				Square tmp = new Square(tmpx, tmpy, piece, 5);
+				Square tmp = new Square(tmpx, tmpy, piece, pieceScore);
 				validM = new Move(startingSquare, tmp);
 				if (!piecePresent(((tmp.getXC() * 75) + 20), (((tmp.getYC() * 75) + 20)))) {
 					moves.push(validM);
@@ -1096,7 +1107,7 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 			int tmpx1 = x - j;
 			int tmpy1 = y;
 			if (!(tmpx1 > 7 || tmpx1 < 0)) {
-				Square tmp2 = new Square(tmpx1, tmpy1, piece, 5);
+				Square tmp2 = new Square(tmpx1, tmpy1, piece, pieceScore);
 				validM2 = new Move(startingSquare, tmp2);
 				if (!piecePresent(((tmp2.getXC() * 75) + 20), (((tmp2.getYC() * 75) + 20)))) {
 					moves.push(validM2);
@@ -1114,7 +1125,7 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 			int tmpx3 = x;
 			int tmpy3 = y + k;
 			if (!(tmpy3 > 7 || tmpy3 < 0)) {
-				Square tmp3 = new Square(tmpx3, tmpy3, piece, 5);
+				Square tmp3 = new Square(tmpx3, tmpy3, piece, pieceScore);
 				validM3 = new Move(startingSquare, tmp3);
 				if (!piecePresent(((tmp3.getXC() * 75) + 20), (((tmp3.getYC() * 75) + 20)))) {
 					moves.push(validM3);
@@ -1132,7 +1143,7 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 			int tmpx4 = x;
 			int tmpy4 = y - l;
 			if (!(tmpy4 > 7 || tmpy4 < 0)) {
-				Square tmp4 = new Square(tmpx4, tmpy4, piece, 5);
+				Square tmp4 = new Square(tmpx4, tmpy4, piece, pieceScore);
 				validM4 = new Move(startingSquare, tmp4);
 				if (!piecePresent(((tmp4.getXC() * 75) + 20), (((tmp4.getYC() * 75) + 20)))) {
 					moves.push(validM4);
@@ -1174,7 +1185,7 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 			int tmpx = x + i;
 			int tmpy = y + i;
 			if (!(tmpx > 7 || tmpx < 0 || tmpy > 7 || tmpy < 0)) {
-				Square tmp = new Square(tmpx, tmpy, piece, 3);
+				Square tmp = new Square(tmpx, tmpy, piece, pieceScore);
 				validM = new Move(startingSquare, tmp);
 				if (!piecePresent(((tmp.getXC() * 75) + 20), (((tmp.getYC() * 75) + 20)))) {
 					moves.push(validM);
@@ -1192,7 +1203,7 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 			int tmpk = x + k;
 			int tmpy2 = y - k;
 			if (!(tmpk > 7 || tmpk < 0 || tmpy2 > 7 || tmpy2 < 0)) {
-				Square tmpK1 = new Square(tmpk, tmpy2, piece, 3);
+				Square tmpK1 = new Square(tmpk, tmpy2, piece, pieceScore);
 				validM2 = new Move(startingSquare, tmpK1);
 				if (!piecePresent(((tmpK1.getXC() * 75) + 20), (((tmpK1.getYC() * 75) + 20)))) {
 					moves.push(validM2);
@@ -1210,7 +1221,7 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 			int tmpL2 = x - l;
 			int tmpy3 = y + l;
 			if (!(tmpL2 > 7 || tmpL2 < 0 || tmpy3 > 7 || tmpy3 < 0)) {
-				Square tmpLMov2 = new Square(tmpL2, tmpy3, piece, 3);
+				Square tmpLMov2 = new Square(tmpL2, tmpy3, piece, pieceScore);
 				validM3 = new Move(startingSquare, tmpLMov2);
 				if (!piecePresent(((tmpLMov2.getXC() * 75) + 20), (((tmpLMov2.getYC() * 75) + 20)))) {
 					moves.push(validM3);
@@ -1228,7 +1239,7 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 			int tmpN2 = x - n;
 			int tmpy4 = y - n;
 			if (!(tmpN2 > 7 || tmpN2 < 0 || tmpy4 > 7 || tmpy4 < 0)) {
-				Square tmpNmov2 = new Square(tmpN2, tmpy4, piece, 3);
+				Square tmpNmov2 = new Square(tmpN2, tmpy4, piece, pieceScore);
 				validM4 = new Move(startingSquare, tmpNmov2);
 				if (!piecePresent(((tmpNmov2.getXC() * 75) + 20), (((tmpNmov2.getYC() * 75) + 20)))) {
 					moves.push(validM4);
@@ -1331,7 +1342,7 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 					icon = chessPiece.getIcon().toString();
 					pieceName = icon.substring(0, (icon.length() - 4));
 					if (pieceName.contains("White")) {
-						Square stmp = new Square(x, y, pieceName, 3);
+						Square stmp = new Square(x, y, pieceName, pieceScore);
 						squares.push(stmp);
 					}
 				}
