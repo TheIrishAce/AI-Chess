@@ -1,7 +1,7 @@
 class Move{
   Square start;
   Square landing;
-  int score;
+  int pieceScoreWeighting;
 
   // Add start, tmp and score.
   // validMove = new Move (start, tmp, score);
@@ -14,7 +14,7 @@ class Move{
   public Move(Square x, Square y, int scr){
     start = x;
     landing = y;
-    score = scr;
+    pieceScoreWeighting = scr;
   }
 
   public Move(){
@@ -30,6 +30,6 @@ class Move{
   }
 
   public int getScore(){
-    return score;
+    return pieceScoreWeighting;
   }
 }

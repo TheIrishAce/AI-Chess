@@ -42,52 +42,52 @@ public class AIAgent {
       //int xPos = landingSquare.getXC();
       int yPos = landingSquare.getYC();
       landingPieceName = landingSquare.getName();
-      int landingPieceScore = 0;
-      System.out.println("-=== CURRENT SCORE FOR MOVE ===-" + landingPieceScore);
-      if((landingPieceName.contains("BlackPawn")) && (landingPieceScore <= 2)){     //Used to start filtering possible moves into moves with desired parameters stack.
+      int landingPieceScore = potentialBestMove.getScore();
+      //System.out.println("-=== CURRENT SCORE FOR MOVE ===-" + landingPieceScore);
+      if((landingPieceName.contains("BlackPawn")) && (landingPieceScore < 2)){     //Used to start filtering possible moves into moves with desired parameters stack.
         if(landingPieceScore != 2){
           filteredMoves.clear();
         }
-        landingPieceScore = 2;
+        //landingPieceScore = 2;
         filteredMoves.add(bestMove); 
       }
-      if((landingPieceName.contains("BlackKnight")) && (landingPieceScore <= 3)){   //Used to start filtering possible moves into moves with desired parameters stack.
+      if((landingPieceName.contains("BlackKnight")) && (landingPieceScore < 3)){   //Used to start filtering possible moves into moves with desired parameters stack.
         if(landingPieceScore != 3){
           filteredMoves.clear();
         }
-        landingPieceScore = 3;
+        //landingPieceScore = 3;
         filteredMoves.add(bestMove); 
       }
-      if((landingPieceName.contains("BlackBishop")) && (landingPieceScore <= 3)){   //Used to start filtering possible moves into moves with desired parameters stack.
+      if((landingPieceName.contains("BlackBishop")) && (landingPieceScore < 3)){   //Used to start filtering possible moves into moves with desired parameters stack.
         if(landingPieceScore != 3){
           filteredMoves.clear();
         }
-        landingPieceScore = 3;
+        //landingPieceScore = 3;
         filteredMoves.add(bestMove);
       }
-      if((landingPieceName.contains("BlackRook")) && (landingPieceScore <= 5)){     //Used to start filtering possible moves into moves with desired parameters stack.
+      if((landingPieceName.contains("BlackRook")) && (landingPieceScore < 5)){     //Used to start filtering possible moves into moves with desired parameters stack.
         if(landingPieceScore != 5){
           filteredMoves.clear();
         }
-        landingPieceScore = 5;
+        //landingPieceScore = 5;
         filteredMoves.add(bestMove);
       }
-      if((landingPieceName.contains("BlackQueen")) && (landingPieceScore <= 9)){    //Used to start filtering possible moves into moves with desired parameters stack.
+      if((landingPieceName.contains("BlackQueen")) && (landingPieceScore < 9)){    //Used to start filtering possible moves into moves with desired parameters stack.
         if(landingPieceScore != 9){
           filteredMoves.clear();
         }
-        landingPieceScore = 9;
+        //landingPieceScore = 9;
         filteredMoves.add(bestMove);
       }
-      if((landingPieceName.contains("BlackKing")) && (landingPieceScore <= 100)){   //Used to start filtering possible moves into moves with desired parameters stack.
+      if((landingPieceName.contains("BlackKing")) && (landingPieceScore < 100)){   //Used to start filtering possible moves into moves with desired parameters stack.
         if(landingPieceScore != 100){
           filteredMoves.clear();
         }
-        landingPieceScore = 100;
+        //landingPieceScore = 100;
         filteredMoves.add(bestMove);
       }
       if(((yPos == 3) || (yPos == 4)) && (landingPieceScore <= 1)){    //Used to create a random move when weighted moves can't be found.
-        landingPieceScore = 1;
+        //landingPieceScore = 1;
         filteredMoves.add(bestMove);
       }
     }
