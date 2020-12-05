@@ -28,6 +28,7 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 	String rand = "rand";
 	static int aiType; //Desired AI type 0 = Random, 1 = Next Best, 2 = 2x Deep.
 	AIAgent agent = new AIAgent();
+	int pieceScore =0;
 
 	public ChessProject() {
 		Dimension boardSize = new Dimension(600, 600);
@@ -135,12 +136,14 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 	 */
 	public Boolean checkWhiteOponent(int landingX, int landingY) {
 		Boolean oponent;
+		pieceScore = 0;
 		Component c1 = chessBoard.findComponentAt(landingX, landingY);
 		JLabel awaitingPiece = (JLabel) c1;
 		String tmp1 = awaitingPiece.getIcon().toString();
 		if (((tmp1.contains("Black")))) {
 			oponent = true;
-		} else {
+		}
+		else {
 			oponent = false;
 		}
 		return oponent;
@@ -835,72 +838,100 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 		return possible;
 	}
 
+	public int getPieceScore(int x, int y, String  name){
+		if(name.contains("BlackPawn")&& piecePresent(x, y)){
+			//oponent = true;
+			pieceScore = 2;
+			System.out.println("Black Pawn found with a value of " + pieceScore);
+		}
+		if(name.contains("BlackKnight")&& piecePresent(x, y)){
+			//oponent = true;
+			pieceScore = 3;
+			System.out.println("Black Knight found with a value of " + pieceScore);
+		}
+		if(name.contains("BlackBishop")&& piecePresent(x, y)){
+			//oponent = true;
+			pieceScore = 3;
+			System.out.println("Black Bishop found with a value of " + pieceScore);
+		}
+		if(name.contains("BlackRook")&& piecePresent(x, y)){
+			//oponent = true;
+			pieceScore = 5;
+			System.out.println("Black Rook found with a value of " + pieceScore);
+		}
+		if(name.contains("BlackQueen")&& piecePresent(x, y)){
+			//oponent = true;
+			pieceScore = 9;
+			System.out.println("Black Queen found with a value of " + pieceScore);
+		}
+		if(name.contains("BlackKing")&& piecePresent(x, y)){
+			//oponent = true;
+			pieceScore = 100;
+			System.out.println("Black King found with a value of " + pieceScore);
+		}
+		if(name.contains("")){
+			pieceScore = 1;
+			System.out.println("No Piece Found | No Points");
+		}
+		return pieceScore;
+	}
+
 	// AI element of the application.
 	private Stack getWhitePawnSquares(int x, int y, String piece) {
 		Stack moves = new Stack();
         Square startingSquare = new Square(x, y, piece);
-        //one in front, one to the front and to the left, one to the front and to the right, two to the front
-        Move validM, validM2, validM3, validM4;
-        //possible direction movements
+        Move validM;
         int tmpx1 = x + 1;
         int tmpx2 = x - 1;
         int tmpy1 = y + 1;
         int tmpy2 = y + 2;
-        //if the new x cord isn't great than 7
-        if (!((tmpx1 > 7))) {
-            //x position stays the same, y position plus 1
-            Square tmp = new Square(x, tmpy1, piece);
-            //x position plus 1, y position plus 1
-            Square tmp1 = new Square(tmpx1, tmpy1, piece);
-            //x position minus 1, y position plus 1
-            Square tmp2 = new Square(tmpx2, tmpy1, piece);
-            //x position stays the same, y position plus 2
-            Square tmp3 = new Square(x, tmpy2, piece);
-
-            if (startY == 6) {
-                //move forward one piece
-                if (checkSurroundingSquares(tmp)) {
-					if(aiType == 0){
-						validM = new Move(startingSquare, tmp);
-					}
-					else if(aiType == 1){
-						validM = new Move(startingSquare, tmp, 0);
-					}
-					else{
-						validM = new Move(startingSquare, tmp);
-					}
-                    if (!piecePresent(((tmp.getXC() * 75) + 20), (((tmp.getYC() * 75) + 20)))) {
-                        moves.push(validM);
-                    }
+        if (y == 1) {
+            if (!piecePresent((x * 75) + 20, (tmpy1 * 75) + 20)) {
+                Square tmp = new Square(x, tmpy1);
+                validM = new Move(startingSquare, tmp, getPieceScore(x, tmpy1, getPieceName(x,tmpy1)));
+                moves.push(validM);
+            }
+            if (!piecePresent((x * 75) + 20, (tmpy1 * 75) + 20) && !piecePresent((x * 75) + 20, (tmpy2 * 75) + 20)) {
+                Square tmp = new Square(x, tmpy2);
+                validM = new Move(startingSquare, tmp, getPieceScore(x, tmpy2, getPieceName(x,tmpy2)));
+                moves.push(validM);
+            }
+            if (piecePresent((tmpx1 * 75) + 20, (tmpy1 * 75) + 20) && tmpx1>=0 && tmpx1<=7 && tmpy1>=0 && tmpy1<=7) {
+                if (checkWhiteOponent((tmpx1 * 75) + 20, (tmpy1 * 75) + 20)) {
+                    Square tmp = new Square(tmpx1, tmpy1);
+                    validM = new Move(startingSquare, tmp, getPieceScore(tmpx1, tmpy1, getPieceName(tmpx1,tmpy1)));
+                    moves.push(validM);
                 }
-                //move forward two pieces
-                if (checkSurroundingSquares(tmp3)) {
-                    validM3 = new Move(startingSquare, tmp3);
-                    if ((!piecePresent(((tmp3.getXC() * 75) + 20), (((tmp3.getYC() * 75) + 20)))) && (!piecePresent(((tmp3.getXC() * 75) + 20), (((tmp3.getYC() * 150) + 20))))) {
-                        moves.push(validM3);
-                    }
+            }
+            if (piecePresent((tmpx2 * 75) + 20, (tmpy1 * 75) + 20) && tmpx2>=0 && tmpx2<=7 && tmpy1>=0 && tmpy1<=7) {
+                if (checkWhiteOponent((tmpx2 * 75) + 20, (tmpy1 * 75) + 20)) {
+                    Square tmp = new Square(tmpx2, tmpy1);
+                    validM = new Move(startingSquare, tmp, getPieceScore(tmpx2, tmpy1, getPieceName(tmpx2,tmpy1)));
+                    moves.push(validM);
                 }
-            } else{
-                //moving forward one piece
-                if (checkSurroundingSquares(tmp)) {
-                    validM = new Move(startingSquare, tmp);
-                    if (!piecePresent(((tmp.getXC() * 75) + 20), (((tmp.getYC() * 75) + 20)))) {
-                        moves.push(validM);
-                    }
+            }
+        } else {
+            if (!piecePresent((x * 75) + 20, (tmpy1 * 75) + 20) && tmpy1>=0 && tmpy1<=7) {
+                Square tmp = new Square(x, tmpy1);
+                validM = new Move(startingSquare, tmp, getPieceScore(x, tmpy1, getPieceName(x,tmpy1)));
+                moves.push(validM);
+            }
+            if (piecePresent((tmpx1 * 75) + 20, (tmpy1 * 75) + 20) && tmpx1>=0 && tmpx1<=7 && tmpy1>=0 && tmpy1<=7) {
+                if (checkWhiteOponent((tmpx1 * 75) + 20, (tmpy1 * 75) + 20)) {
+                    Square tmp = new Square(tmpx1, tmpy1);
+                    validM = new Move(startingSquare, tmp, getPieceScore(tmpx1, tmpy1, getPieceName(tmpx1,tmpy1)));
+                    moves.push(validM);
                 }
-                //moving forward one piece and to the right if there is a piece there
-                if (checkSurroundingSquares(tmp1)) {
-                    validM2 = new Move(startingSquare, tmp1);
-                    if (!piecePresent(((tmp1.getXC() * 75) + 20), (((tmp1.getYC() * 75) + 20)))) {
-                        //would consider it a valid move if there is no piece there, can't take this if out at the moment, breaks code
-                    } else {
-                        if (checkWhiteOponent(((tmp1.getXC() * 75) + 20), (((tmp1.getYC() * 75) + 20)))) {
-                            moves.push(validM2);
-                        }
-                    }
+            }
+            if (piecePresent((tmpx2 * 75) + 20, (tmpy1 * 75) + 20) && tmpx2>=0 && tmpx2<=7 && tmpy1>=0 && tmpy1<=7) {
+                if (checkWhiteOponent((tmpx2 * 75) + 20, (tmpy1 * 75) + 20)) {
+                    Square tmp = new Square(tmpx2, tmpy1);
+                    validM = new Move(startingSquare, tmp, getPieceScore(tmpx2, tmpy1, getPieceName(tmpx2,tmpy1)));
+                    moves.push(validM);
                 }
             }
         }
+
         return moves;
 	}
 
@@ -1407,9 +1438,8 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 				Move tmpMove = (Move) completeMoves.pop();
 				Square s1 = (Square) tmpMove.getStart();
 				Square s2 = (Square) tmpMove.getLanding();
-				System.out.println("The " + s1.getName() + " can move from (" + s1.getXC() + ", " + s1.getYC()
-						+ ") to the following square: (" + s2.getXC() + ", " + s2.getYC() + ")");
-						moves.push(tmpMove);
+				//System.out.println("The " + s1.getName() + " can move from (" + s1.getXC() + ", " + s1.getYC()+ ") to the following square: (" + s2.getXC() + ", " + s2.getYC() + ")");
+				moves.push(tmpMove);
 			}
 			System.out.println("=============================================================");
 			Border redBorder = BorderFactory.createLineBorder(Color.RED, 3);
