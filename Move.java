@@ -15,9 +15,13 @@ class Move{
     start = x;
     landing = y;
     pieceScoreWeighting = scr;
+    System.out.println("======================================~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~======================================");
     System.out.print("START:" + start.pieceName + "\n");
     System.out.print("LAND:" + landing.pieceName + "\n");
     System.out.print("MOVE WEIGHTING:" + pieceScoreWeighting + "\n\n");
+    System.out.print("FROM X: " + x.xCoor + " Y " + x.yCoor + "\n\n");
+    System.out.print("TO X: " + y.xCoor + " Y " + y.yCoor + "\n\n");
+    System.out.println("======================================-------------------------------======================================" + "\n");
   }
 
   public Move(){

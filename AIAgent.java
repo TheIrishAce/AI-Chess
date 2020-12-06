@@ -49,23 +49,23 @@ public class AIAgent {
         filteredMoves.push(bestMove);
       }
       if((landingPieceScore == 2)){     //Used to start filtering possible moves into moves with desired parameters stack.
-        //filteredMoves.clear();
+        filteredMoves.clear();
         filteredMoves.push(bestMove);
       }
       if((landingPieceScore == 3)){   //Used to start filtering possible moves into moves with desired parameters stack.
-        //filteredMoves.clear();
+        filteredMoves.clear();
         filteredMoves.push(bestMove);
       }
       if((landingPieceScore == 5)){     //Used to start filtering possible moves into moves with desired parameters stack.
-        //filteredMoves.clear();
+        filteredMoves.clear();
         filteredMoves.push(bestMove);
       }
       if((landingPieceScore == 9)){    //Used to start filtering possible moves into moves with desired parameters stack.
-        //filteredMoves.clear();
+        filteredMoves.clear();
         filteredMoves.push(bestMove);
       }
       if(landingPieceScore == 100){   //Used to start filtering possible moves into moves with desired parameters stack.
-        //filteredMoves.clear();
+        filteredMoves.clear();
         filteredMoves.push(bestMove);
       }
     }
@@ -73,14 +73,20 @@ public class AIAgent {
       //Stack test = (Stack)filteredMoves.clone();
       int moveID = rand.nextInt(filteredMoves.size());
      
-      for (int i = 0; i < (filteredMoves.size() - (moveID)); i++) {
+      for (int i = 0; i < (filteredMoves.size()); i++) {
         Move latestFilteredMove = (Move)filteredMoves.pop();
-        //int pieceScore = 0;
+        System.out.println(filteredMoves.elements());
         if(latestFilteredMove.pieceScoreWeighting >= pieceScore){
           newBestMove = latestFilteredMove;
           pieceScore = latestFilteredMove.pieceScoreWeighting;
+          System.out.println("New best move found");
+          System.out.println("NBM START X" + newBestMove.start.xCoor);
+          System.out.println("NBM START Y" + newBestMove.start.yCoor);
+          System.out.println("NBM LAND X" + newBestMove.landing.xCoor);
+          System.out.println("NBM LAND Y" + newBestMove.landing.yCoor);
         }
-        System.out.println("AAAAAAA" + landingPieceScore);
+        System.out.println("AAAAAAA" + pieceScore);
+        System.out.println("BBBBBBB" + landingPieceScore);
         //filteredMoves.pop();
       }
       //filteredMoves.pop();
@@ -94,6 +100,12 @@ public class AIAgent {
       //potentialBestMove = (Move) filteredMoves.pop();
       //bestMove = (Move) filteredMoves.pop();
       //filteredMoves.clear();
+      //possibilities.clear();
+      //initalMoves.clear();
+      possibilities.clear();
+      initalMoves.clear();
+      filteredMoves.clear();
+      pieceScore=0;
       return newBestMove;
     }
     else {
@@ -104,7 +116,10 @@ public class AIAgent {
       }
       potentialBestMove = (Move) initalMoves.pop();
 	    //bestMove = (Move) filteredMoves.pop();
-	    //System.out.println("PIECE CAPTURED! : " + landingPieceName);
+      //System.out.println("PIECE CAPTURED! : " + landingPieceName);
+      possibilities.clear();
+      initalMoves.clear();
+      filteredMoves.clear();
       return potentialBestMove;
     }
     

@@ -155,28 +155,28 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 			JLabel awaitingPiece = (JLabel) c1;
 			String name = awaitingPiece.getIcon().toString();
 			if(name.contains("BlackKing")){			//Black king found.
-				return pieceWeighting = 100;
+				 pieceWeighting = 100;
 			}
 			else if(name.contains("BlackQueen")){	//Black queen found.
-				return pieceWeighting = 9;
+				 pieceWeighting = 9;
 			}
 			else if(name.contains("BlackRook")){	//Black rook found.
-				return pieceWeighting = 5;
+				 pieceWeighting = 5;
 			}
 			else if(name.contains("BlackBishop")){	//Black bishop found.
-				return pieceWeighting = 3;
+				 pieceWeighting = 3;
 			}
 			else if(name.contains("BlackKnight")){	//Black knight found.
-				return pieceWeighting = 3;
+				 pieceWeighting = 3;
 			}
 			else if(name.contains("BlackPawn")){	//Black pawn found.
-				return pieceWeighting = 2;
+				 pieceWeighting = 2;
 			}
 			else if(name.isEmpty()){	//No piece found.
-				return pieceWeighting = 1;
+				 pieceWeighting = 1;
 			}
 		}
-		return pieceWeighting = 0;
+		return pieceWeighting;
 	}
 
 	/*
@@ -1470,10 +1470,10 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 			int landingY1 = (landingPoint.getYC() * 75) + 20;
 			System.out.println("-------- Move " + startingPoint.getName() + " (" + startingPoint.getXC() + ", "
 					+ startingPoint.getYC() + ") to (" + landingPoint.getXC() + ", " + landingPoint.getYC() + ")");
-			System.out.println("Starting X: "+startX1);
-			System.out.println("Starting Y: "+startY1);
-			System.out.println("Landing X: "+landingX1);
-			System.out.println("Landing Y: "+landingY1);
+			System.out.println("Starting X: "+startX1/75 + " ChessProject");
+			System.out.println("Starting Y: "+startY1/75 + " ChessProject");
+			System.out.println("Landing X: "+landingX1/75 + " ChessProject");
+			System.out.println("Landing Y: "+landingY1/75 + " ChessProject");
 			Component c = (JLabel) chessBoard.findComponentAt(startX1, startY1);
 			Container parent = c.getParent();
 			parent.remove(c);
