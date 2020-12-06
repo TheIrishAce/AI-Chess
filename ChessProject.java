@@ -149,7 +149,7 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 	public int getPieceNameFromMove(int x, int y){
         x=x*75;
 		y=y*75;
-		int pieceWeighting;	// inital declaration for piece weighting.
+		int pieceWeighting = 0;	// inital declaration for piece weighting.
         if(chessBoard.findComponentAt(x, y) instanceof JLabel){
 			Component c1 = chessBoard.findComponentAt(x, y);
 			JLabel awaitingPiece = (JLabel) c1;
@@ -1470,7 +1470,10 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 			int landingY1 = (landingPoint.getYC() * 75) + 20;
 			System.out.println("-------- Move " + startingPoint.getName() + " (" + startingPoint.getXC() + ", "
 					+ startingPoint.getYC() + ") to (" + landingPoint.getXC() + ", " + landingPoint.getYC() + ")");
-
+			System.out.println("Starting X: "+startX1);
+			System.out.println("Starting Y: "+startY1);
+			System.out.println("Landing X: "+landingX1);
+			System.out.println("Landing Y: "+landingY1);
 			Component c = (JLabel) chessBoard.findComponentAt(startX1, startY1);
 			Container parent = c.getParent();
 			parent.remove(c);

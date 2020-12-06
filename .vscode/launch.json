@@ -16,7 +16,7 @@
             "request": "launch",
             "mainClass": "ChessProject",
             "projectName": "ChessProject_94af482e",
-            "console": "externalTerminal"
+            "console": "internalConsole"
         }
     ]
 }

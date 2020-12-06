@@ -37,49 +37,43 @@ public class AIAgent {
     Move potentialBestMove = new Move();
     Stack filteredMoves = new Stack();                //Stack of Moves that meet the desired parameters of the for loop.
     Stack initalMoves = (Stack) possibilities.clone();                //Make note of moves before they're popped.
-    System.out.println(initalMoves);
     for(int i = 0; i < initalMoves.size(); i++){      //Loop through each potential move.
       bestMove = (Move) possibilities.pop();          //Set best move to the lastest move.
-      //Square startingSquare = bestMove.getStart();
       Square landingSquare = (Square) bestMove.getLanding();
-      //int xPos = landingSquare.getXC();
       int yPos = landingSquare.getYC();
       landingPieceName = landingSquare.getName();
       landingPieceScore = bestMove.pieceScoreWeighting;
       //System.out.println("-=== CURRENT SCORE FOR MOVE ===-" + landingPieceScore);
-      if(landingPieceScore == 100){   //Used to start filtering possible moves into moves with desired parameters stack.
-        filteredMoves.add(bestMove);
-        //break;
-      }
-      if((landingPieceScore == 9)){    //Used to start filtering possible moves into moves with desired parameters stack.
-        filteredMoves.add(bestMove);
-        //break;
-      }
-      if((landingPieceScore == 5)){     //Used to start filtering possible moves into moves with desired parameters stack.
-        filteredMoves.add(bestMove);
-        //break;
-      }
-      if((landingPieceScore == 3)){   //Used to start filtering possible moves into moves with desired parameters stack.
-        filteredMoves.add(bestMove);
-        //break;
+      if((landingPieceScore == 1) && (yPos == 3 || yPos == 4)){     //Used to start filtering possible moves into moves with desired parameters stack.
+        //filteredMoves.clear();
+        filteredMoves.push(bestMove);
       }
       if((landingPieceScore == 2)){     //Used to start filtering possible moves into moves with desired parameters stack.
-        filteredMoves.add(bestMove);
-        //break;
+        //filteredMoves.clear();
+        filteredMoves.push(bestMove);
       }
-      if((landingPieceScore == 1)){     //Used to start filtering possible moves into moves with desired parameters stack.
-        filteredMoves.add(bestMove);
-        //break;
+      if((landingPieceScore == 3)){   //Used to start filtering possible moves into moves with desired parameters stack.
+        //filteredMoves.clear();
+        filteredMoves.push(bestMove);
       }
-
-
-      //break;
+      if((landingPieceScore == 5)){     //Used to start filtering possible moves into moves with desired parameters stack.
+        //filteredMoves.clear();
+        filteredMoves.push(bestMove);
+      }
+      if((landingPieceScore == 9)){    //Used to start filtering possible moves into moves with desired parameters stack.
+        //filteredMoves.clear();
+        filteredMoves.push(bestMove);
+      }
+      if(landingPieceScore == 100){   //Used to start filtering possible moves into moves with desired parameters stack.
+        //filteredMoves.clear();
+        filteredMoves.push(bestMove);
+      }
     }
     if (!filteredMoves.empty()) {
       //Stack test = (Stack)filteredMoves.clone();
       int moveID = rand.nextInt(filteredMoves.size());
      
-      for (int i = 0; i < (filteredMoves.size()); i++) {
+      for (int i = 0; i < (filteredMoves.size() - (moveID)); i++) {
         Move latestFilteredMove = (Move)filteredMoves.pop();
         //int pieceScore = 0;
         if(latestFilteredMove.pieceScoreWeighting >= pieceScore){
@@ -99,12 +93,13 @@ public class AIAgent {
         // System.out.println("AAAAAAA" + landingPieceScore);
       //potentialBestMove = (Move) filteredMoves.pop();
       //bestMove = (Move) filteredMoves.pop();
+      //filteredMoves.clear();
       return newBestMove;
     }
     else {
       //Stack test = (Stack)filteredMoves.clone();
       int moveID = rand.nextInt(initalMoves.size());
-      for (int i = 0; i < (initalMoves.size() - (moveID)); i++) {
+      for (int i = 0; i < (initalMoves.size()); i++) {
 		    initalMoves.pop();
       }
       potentialBestMove = (Move) initalMoves.pop();
