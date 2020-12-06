@@ -63,14 +63,15 @@ public class AIAgent {
         filteredMoves.add(bestMove);
         //break;
       }
-      if((landingPieceScore == 3)){   //Used to start filtering possible moves into moves with desired parameters stack.
-        filteredMoves.add(bestMove);
-        //break;
-      }
       if((landingPieceScore == 2)){     //Used to start filtering possible moves into moves with desired parameters stack.
         filteredMoves.add(bestMove);
         //break;
       }
+      if((landingPieceScore == 1)){     //Used to start filtering possible moves into moves with desired parameters stack.
+        filteredMoves.add(bestMove);
+        //break;
+      }
+
 
       //break;
     }
@@ -78,22 +79,23 @@ public class AIAgent {
       //Stack test = (Stack)filteredMoves.clone();
       int moveID = rand.nextInt(filteredMoves.size());
      
-      for (int i = 1; i < (filteredMoves.size()); i++) {
-        // Move latestFilteredMove = (Move)filteredMoves.pop();
-        // //int pieceScore = 0;
-        // if(pieceScore <= latestFilteredMove.pieceScoreWeighting){
-        //   newBestMove = latestFilteredMove;
-        //   pieceScore = latestFilteredMove.pieceScoreWeighting;
-        // }
-        // System.out.println("AAAAAAA" + landingPieceScore);
-        filteredMoves.pop();
+      for (int i = 0; i < (filteredMoves.size()); i++) {
+        Move latestFilteredMove = (Move)filteredMoves.pop();
+        //int pieceScore = 0;
+        if(latestFilteredMove.pieceScoreWeighting >= pieceScore){
+          newBestMove = latestFilteredMove;
+          pieceScore = latestFilteredMove.pieceScoreWeighting;
+        }
+        System.out.println("AAAAAAA" + landingPieceScore);
+        //filteredMoves.pop();
       }
-      Move latestFilteredMove = (Move)filteredMoves.pop();
+      //filteredMoves.pop();
+      //Move latestFilteredMove = (Move)filteredMoves.pop();
         // //int pieceScore = 0;
-      if(pieceScore <= latestFilteredMove.pieceScoreWeighting){
-        newBestMove = latestFilteredMove;
-        pieceScore = latestFilteredMove.pieceScoreWeighting;
-      }
+      // if(pieceScore <= latestFilteredMove.pieceScoreWeighting){
+      //   newBestMove = latestFilteredMove;
+      //   pieceScore = latestFilteredMove.pieceScoreWeighting;
+      // }
         // System.out.println("AAAAAAA" + landingPieceScore);
       //potentialBestMove = (Move) filteredMoves.pop();
       //bestMove = (Move) filteredMoves.pop();
