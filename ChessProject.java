@@ -151,30 +151,29 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 			Component c1 = chessBoard.findComponentAt(x, y);
 			JLabel awaitingPiece = (JLabel) c1;
 			String name = awaitingPiece.getIcon().toString();
-
-			if(name.contains("BlackPawn")){
-				//System.out.println("Black Pawn found with a value of 2");
-				return pieceWeighting = 2;
-			}
-			else if(name.contains("BlackKnight")){
-				//System.out.println("Black Knight found with a value of 3");
-				return pieceWeighting = 3;
-			}
-			else if(name.contains("BlackBishop")){
-				//System.out.println("Black Bishop found with a value of 3");
-				return pieceWeighting = 3;
-			}
-			else if(name.contains("BlackRook")){
-				//System.out.println("Black Rook found with a value of 5");
-				return pieceWeighting = 5;
+			if(name.contains("BlackKing")){
+				//System.out.println("Black King found with a value of 100");
+				return pieceWeighting = 100;
 			}
 			else if(name.contains("BlackQueen")){
 				//System.out.println("Black Queen found with a value of 9");
 				return pieceWeighting = 9;
 			}
-			else if(name.contains("BlackKing")){
-				//System.out.println("Black King found with a value of 100");
-				return pieceWeighting = 100;
+			else if(name.contains("BlackRook")){
+				//System.out.println("Black Rook found with a value of 5");
+				return pieceWeighting = 5;
+			}
+			else if(name.contains("BlackBishop")){
+				//System.out.println("Black Bishop found with a value of 3");
+				return pieceWeighting = 3;
+			}
+			else if(name.contains("BlackKnight")){
+				//System.out.println("Black Knight found with a value of 3");
+				return pieceWeighting = 3;
+			}
+			else if(name.contains("BlackPawn")){
+				//System.out.println("Black Pawn found with a value of 2");
+				return pieceWeighting = 2;
 			}
 			else if(name.isEmpty()){
 				//System.out.println("No Piece Found | No Points");

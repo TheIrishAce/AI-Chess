@@ -14,6 +14,8 @@ public class AIAgent {
   //Move bestMove;
   String landingPieceName;
   int landingPieceScore;
+  int pieceScore = 0;
+  Move newBestMove;
 
   public AIAgent(){
     rand = new Random();
@@ -43,82 +45,64 @@ public class AIAgent {
       //int xPos = landingSquare.getXC();
       int yPos = landingSquare.getYC();
       landingPieceName = landingSquare.getName();
-      landingPieceScore = potentialBestMove.pieceScoreWeighting;
+      landingPieceScore = bestMove.pieceScoreWeighting;
       //System.out.println("-=== CURRENT SCORE FOR MOVE ===-" + landingPieceScore);
-      if((landingPieceName.contains("King")) && (landingPieceScore < 100)){   //Used to start filtering possible moves into moves with desired parameters stack.
-        if(landingPieceScore != 100){
-          filteredMoves.clear();
-        }
-        landingPieceScore = 100;
+      if(landingPieceScore == 100){   //Used to start filtering possible moves into moves with desired parameters stack.
         filteredMoves.add(bestMove);
         //break;
       }
-      if((landingPieceName.contains("Queen")) && (landingPieceScore < 9)){    //Used to start filtering possible moves into moves with desired parameters stack.
-        if(landingPieceScore != 9){
-          filteredMoves.clear();
-        }
-        landingPieceScore = 9;
+      if((landingPieceScore == 9)){    //Used to start filtering possible moves into moves with desired parameters stack.
         filteredMoves.add(bestMove);
         //break;
       }
-      if((landingPieceName.contains("Rook")) && (landingPieceScore < 5)){     //Used to start filtering possible moves into moves with desired parameters stack.
-        if(landingPieceScore != 5){
-          filteredMoves.clear();
-        }
-        landingPieceScore = 5;
+      if((landingPieceScore == 5)){     //Used to start filtering possible moves into moves with desired parameters stack.
         filteredMoves.add(bestMove);
         //break;
       }
-      if((landingPieceName.contains("Bishop")) && (landingPieceScore < 3)){   //Used to start filtering possible moves into moves with desired parameters stack.
-        if(landingPieceScore != 3){
-          filteredMoves.clear();
-        }
-        landingPieceScore = 3;
+      if((landingPieceScore == 3)){   //Used to start filtering possible moves into moves with desired parameters stack.
         filteredMoves.add(bestMove);
         //break;
       }
-      if((landingPieceName.contains("Knight")) && (landingPieceScore < 3)){   //Used to start filtering possible moves into moves with desired parameters stack.
-        if(landingPieceScore != 3){
-          filteredMoves.clear();
-        }
-        landingPieceScore = 3;
+      if((landingPieceScore == 3)){   //Used to start filtering possible moves into moves with desired parameters stack.
         filteredMoves.add(bestMove);
         //break;
       }
-      if((landingPieceName.contains("Pawn")) && (landingPieceScore < 2)){     //Used to start filtering possible moves into moves with desired parameters stack.
-        if(landingPieceScore != 2){
-          filteredMoves.clear();
-        }
-        
-        landingPieceScore = 2;
+      if((landingPieceScore == 2)){     //Used to start filtering possible moves into moves with desired parameters stack.
         filteredMoves.add(bestMove);
         //break;
       }
-      if(((yPos == 3) || (yPos == 4)) && (landingPieceScore < 1)){    //Used to create a random move when weighted moves can't be found.
-        landingPieceScore = 1;
-        filteredMoves.add(bestMove);
-        //break;
-      }
+
       //break;
     }
     if (!filteredMoves.empty()) {
       //Stack test = (Stack)filteredMoves.clone();
       int moveID = rand.nextInt(filteredMoves.size());
-      for (int i = 1; i < (filteredMoves.size() - (moveID)); i++) {
+     
+      for (int i = 1; i < (filteredMoves.size()); i++) {
+        // Move latestFilteredMove = (Move)filteredMoves.pop();
+        // //int pieceScore = 0;
+        // if(pieceScore <= latestFilteredMove.pieceScoreWeighting){
+        //   newBestMove = latestFilteredMove;
+        //   pieceScore = latestFilteredMove.pieceScoreWeighting;
+        // }
+        // System.out.println("AAAAAAA" + landingPieceScore);
         filteredMoves.pop();
-        System.out.println("AAAAAAA" + landingPieceScore);
       }
-      potentialBestMove = (Move) filteredMoves.pop();
+      Move latestFilteredMove = (Move)filteredMoves.pop();
+        // //int pieceScore = 0;
+      if(pieceScore <= latestFilteredMove.pieceScoreWeighting){
+        newBestMove = latestFilteredMove;
+        pieceScore = latestFilteredMove.pieceScoreWeighting;
+      }
+        // System.out.println("AAAAAAA" + landingPieceScore);
+      //potentialBestMove = (Move) filteredMoves.pop();
       //bestMove = (Move) filteredMoves.pop();
-      if(landingPieceName.contains("Black")){
-        System.out.println("PIECE CAPTURED! : " + landingPieceName);
-      }
-      return potentialBestMove;
+      return newBestMove;
     }
     else {
       //Stack test = (Stack)filteredMoves.clone();
       int moveID = rand.nextInt(initalMoves.size());
-      for (int i = 1; i < (initalMoves.size() - (moveID)); i++) {
+      for (int i = 0; i < (initalMoves.size() - (moveID)); i++) {
 		    initalMoves.pop();
       }
       potentialBestMove = (Move) initalMoves.pop();
