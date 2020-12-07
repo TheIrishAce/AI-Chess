@@ -283,15 +283,16 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 								validMove = true;
 								white2Move = true;
 							}
-							else if (piecePresent(e.getX(), e.getY())) {
-								if (checkBlackOponent(e.getX(), e.getY())) {
-									validMove = true;
-									white2Move = true;
-									if (startY == 1) {
-										success = true;
-									}
-								}
-							} else {
+							// else if (piecePresent(e.getX(), e.getY())) {
+							// 	if (checkBlackOponent(e.getX(), e.getY())) {
+							// 		validMove = true;
+							// 		white2Move = true;
+							// 		if (startY == 1) {
+							// 			success = true;
+							// 		}
+							// 	}
+							// } 
+							else {
 								validMove = false;
 							}
 						} else {
@@ -1519,10 +1520,10 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 
 	public static void initalCreation() {
 		ChessProject frame = new ChessProject();
-		frame.setAlwaysOnTop (true);
+		frame.setAlwaysOnTop (true);	//Always have this window on top. Good for debugging.
 		frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		frame.pack();
-		frame.setResizable(true);
+		frame.setResizable(false);	//Changed to false to stop accidential resize.
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);		
 	}

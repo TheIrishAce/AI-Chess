@@ -44,7 +44,7 @@ public class AIAgent {
       landingPieceName = landingSquare.getName();
       landingPieceScore = bestMove.pieceScoreWeighting;
       //System.out.println("-=== CURRENT SCORE FOR MOVE ===-" + landingPieceScore);
-      if((landingPieceScore == 1) && (yPos == 3 || yPos == 4)){     //Used to start filtering possible moves into moves with desired parameters stack.
+      if((landingPieceScore <= 1) && (yPos == 3 || yPos == 4)){     //Used to start filtering possible moves into moves with desired parameters stack.
         //filteredMoves.clear();
         filteredMoves.push(bestMove);
       }
