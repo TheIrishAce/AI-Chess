@@ -1532,8 +1532,8 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 	 * Main method that gets the ball moving.
 	 */
 	public static void main(String[] args) {
-		//String[] strategy = new String[] { "Random", "Next Best", "2 Deep" };
-		//aiType = JOptionPane.showOptionDialog(null, "Message", "Title", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, strategy, strategy[0]);
+		String[] strategy = new String[] { "Random", "Next Best", "2 Deep" };
+		aiType = JOptionPane.showOptionDialog(null, "Choose AI Type", "Pick an AI", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, strategy, strategy[0]);
 		aiType = 1;
 		initalCreation(); //Create the chess board.
 	}
