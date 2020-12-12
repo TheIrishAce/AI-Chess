@@ -19,6 +19,7 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 	int startY;
 	int initialX;
 	int initialY;
+	boolean whiteKingKilled = false;
 
 	String pieceName;
 	JPanel panels;
@@ -201,6 +202,9 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 		String tmp1 = awaitingPiece.getIcon().toString();
 		if (((tmp1.contains("White")))) {
 			oponent = true;
+			if(tmp1.contains("King")){
+				whiteKingKilled = true;
+			}
 		} else {
 			oponent = false;
 		}
@@ -668,6 +672,10 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 				}
 				chessPiece.setVisible(true);
 			}
+		}
+		if(whiteKingKilled){
+			JOptionPane.showMessageDialog(null, "You have captured the enemy King!");
+			System.exit(0);
 		}
 		if (validMove) {
 			makeAIMove();
